@@ -47,5 +47,6 @@ Conclusion:
 My approach to designing a game in processing would be to have the player’s turn outside of any class and then when a player wants to perform an action they receive the information from the following objects and use the information and update the classes. This is not ideal but as processing requires draw to be outside any class,it becomes the best way I can see to '
 implement a game.
 
-From an iteration perspective, you can't really force all the games to use the same framework, and some drawing libraries
-like pygame actually do let you bundle the drawing functions for an object, with that object.
+From an iteration perspective, you can't really force all the games to use the same framework. The frawework or library for
+drawing the game actually matters enough that it can interfere with how you organize things aswell, since something
+like pygame will actually let you bundle drawing methods for an object, with the object.
