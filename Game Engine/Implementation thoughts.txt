@@ -1,0 +1,50 @@
+Original Template:
+
+
+Class board:
+	Example attributes:
+	Player_turn
+	Board
+
+	Example attributes:
+	Change_turn
+	main_game_loop
+
+Class player:
+	Example attributes:
+	Pieces_owned 
+	points
+	
+	Example functions:
+	take_action
+
+Class tile:
+	Example attributes:
+	Price (monopoly)
+	colour(chess/checkers)
+
+	Example functions:
+	? (maybe just helper class)
+
+Class piece:
+	Example attributes:
+	Positions
+	Possible_moves 
+
+	Example functions
+	Calculate_own_moveset
+
+
+Implementation of Monopoly:
+In my attempt to create a barebones version of monopoly I initially designed the framework to handle the follow the logical order of monopoly turns. This meant that I separated the parts of monopoly into classes such as Tile to hold the information regarding a tile and the player who owned the tile. This was very useful as I was able to find who to pay rent to when a player landed on an owned property as the tile knew who the owner was. The player class originally held the action function that was called by mainLoop however as the player moved along the board the player would require the board itself which would be a waste. Moving the action function to board is most likely not the best solution however due to python not containing pointers like other languages such as c this was the best solution I could come up with. If I had time to reimplement the game engine I would keep Tile the same but change Board and Player so that outside of Board and Player the movement was handled making it easier for the draw function of processing to access the board and allowing the player to move along the board easier.
+
+
+
+
+Implementation of Tic-Tac Toe:
+Most of what happened when trying to implement something smaller like tic tac toe was that some of the class and hard to justify using at all.  Separating everything out into multiple objects still helps with drawing things in processing at this level, however, even an older implementation I had done in school couldn’t justify having the piece class used.  
+
+The tile class is only really useful for helping draw the game, and the player class turns into a helper class that maybe should only hold attributes.  This sparsity can make you feel more pressured to try and spread functions among different classes, when a more practical implementation may have most functions/attributes just in the board class.
+
+Conclusion: 
+My approach to designing a game in processing would be to have the player’s turn outside of any class and then when a player wants to perform an action they receive the information from the following objects and use the information and update the classes. This is not ideal but as processing requires draw to be outside any class and it becomes the best way I can see to implement a game.
