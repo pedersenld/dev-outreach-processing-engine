@@ -1,8 +1,8 @@
 """
-Almost working tic tac toe implementation:
+Sorta broken tic tac toe implementation:
 
     - might move position function to board just for 
-    ease of use 
+    ease of use. doesn't really make sense to keep it in there?
 
 Basic Template Explained Below above each function
 
