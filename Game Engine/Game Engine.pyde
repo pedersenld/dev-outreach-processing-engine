@@ -1,3 +1,7 @@
+#Player buys every property they land on, everything costs the same, no unique squares, if players cant afford to pay rent they just go into negative money
+#No money for going around go(implemented but values need to change on rent/purchase as otherwise game does not end because they gain too much money)
+
+
 import random
 import time
 
@@ -17,8 +21,10 @@ class Board:
         
         
     def mainLoop(self):
+        #Terminate the game if only 1 player is left
         while(len(self.playerOrder) > 1):
             self.action()
+            #Change to next player and remove the current player if they are out of money
             if self.playerTurn == self.playerOrder[-1]:
                 if self.playerTurn.money <= 0:
                     self.playerOrder.remove(self.playerTurn)
@@ -35,9 +41,11 @@ class Board:
         dice2 = random.randint(1,6)
         reroll = dice1 == dice2 if True else False
         self.playerTurn.position += dice1 + dice2
+        #determine if player passes go
         if self.playerTurn.position >= self.boardSize:
             self.playerTurn.position %= self.boardSize
             self.playerTurn.money += 0
+        #determine who owns the property and pay rent/buy property
         boardTile = self.board[self.playerTurn.position]
         if boardTile.owner == None:
             if self.playerTurn.money >= boardTile.cost:
@@ -46,12 +54,13 @@ class Board:
         else:
             self.playerTurn.money -= boardTile.rent
             boardTile.owner.money += boardTile.rent
+        #if player rolled doubles then reroll
         if reroll:
             self.action()
         
         
         
-                                        
+        #Creates the board full of tiles                                
     def setupBoard(self):
         #TODO: For student to implement based on game
         temp = []
@@ -61,6 +70,8 @@ class Board:
             temp.append(Tile(names[i],prices[i]))
         return temp
         
+        #Creates a player object for each player
+        #If order needs to be decided then should also be done inside of this function
     def setPlayerOrder(self, numPlayers):
         #TODO: For student to implement based on game
         temp = []
@@ -68,6 +79,9 @@ class Board:
             temp.append(Player(i, 0))
         return temp
         
+#Player and Tile are used to store information about each tile/player
+#This is beneficial as it makes it easy for the player to interact with the board as their position corresponds to a tile on the board
+
 
 class Player:
     
@@ -101,7 +115,9 @@ def setup():
     size(canvasSize,5*canvasSize/4)
     background(0)
     f = createFont("Arial",16)
-    
+#drawing math should be cleaned up
+#general idea is to divide the board into how many tiles are needed in each spot from squares and using this
+#with canvas size to proportion the size of each square
 def draw():
     global f
     textFont(f,16)
