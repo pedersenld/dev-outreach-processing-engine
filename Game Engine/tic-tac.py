@@ -23,7 +23,7 @@ class Board:
             for j in range(3):
                 row.append('.')
             board.append(row)
-        print(board)
+        return board
 
     def displayBoard(self):
         # prints the board
@@ -35,7 +35,7 @@ class Board:
         while True:
             self.displayBoard() 
             # do the action
-            self.playerTurn.action()
+            self.action()
             if self.playerTurn == self.playerOrder[-1]:
                 self.playerTurn = self.playerOrder[0]
             else:
@@ -111,7 +111,7 @@ class Player:
             for i in range(len(position)):
                 position[i] = int(position[i])
             for num in position:
-                if position < 0 or position > 5:
+                if num < 0 or num > 5:
                     print('Position out of bounds')
                 elif self.board[position[0]][position[1]] == '.':
                     print('Board spot full')
