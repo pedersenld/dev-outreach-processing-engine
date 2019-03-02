@@ -1,32 +1,127 @@
+import random
+import time
+
+players = 4
+boardSize = 40
+canvasSize = 440
+
 class Board:
     
-    def __init__(self, numPlayers):
+    
+    def __init__(self, numPlayers, boardSize):
         
-        self.playerOrder = []
-        self.setPlayerOrder(numPlayers)
-        self.playerTurn = playerOrder[0]
-        self.mainLoop()
+        self.boardSize = boardSize
+        self.board = self.setupBoard()
+        self.playerOrder = self.setPlayerOrder(numPlayers)
+        self.playerTurn = self.playerOrder[0]
+        
         
     def mainLoop(self):
-        while(1):
-            self.playerTurn.action()
+        while(len(self.playerOrder) > 1):
+            self.action()
             if self.playerTurn == self.playerOrder[-1]:
+                if self.playerTurn.money <= 0:
+                    self.playerOrder.remove(self.playerTurn)
                 self.playerTurn = self.playerOrder[0]
             else:
-                self.playerTurn = self.playerOrder[self.playerOrder.index(self.playerTurn)+1]
+                playerIndex = self.playerOrder.index(self.playerTurn)
+                self.playerTurn = self.playerOrder[playerIndex+1]
+                if self.playerOrder[playerIndex].money <= 0:
+                    del self.playerOrder[playerIndex]
+        print self.playerOrder[0].name, "is the winner"
+        
+    def action(self):
+        dice1 = random.randint(1,6)
+        dice2 = random.randint(1,6)
+        reroll = dice1 == dice2 if True else False
+        self.playerTurn.position += dice1 + dice2
+        if self.playerTurn.position >= self.boardSize:
+            self.playerTurn.position %= self.boardSize
+            self.playerTurn.money += 0
+        boardTile = self.board[self.playerTurn.position]
+        if boardTile.owner == None:
+            if self.playerTurn.money >= boardTile.cost:
+                boardTile.owner = self.playerTurn
+                self.playerTurn.money -= boardTile.cost
+        else:
+            self.playerTurn.money -= boardTile.rent
+            boardTile.owner.money += boardTile.rent
+        if reroll:
+            self.action()
+        
+        
+        
+                                        
+    def setupBoard(self):
+        #TODO: For student to implement based on game
+        temp = []
+        names = [str(x) for x in range(self.boardSize)]
+        prices = [x for x in range(self.boardSize)]
+        for i in range(self.boardSize):
+            temp.append(Tile(names[i],prices[i]))
+        return temp
         
     def setPlayerOrder(self, numPlayers):
         #TODO: For student to implement based on game
-        for _ in range(numPlayers):
-            self.playerOrder.append(Player())
+        temp = []
+        for i in range(numPlayers):
+            temp.append(Player(i, 0))
+        return temp
         
 
 class Player:
     
-    def __init__(self):
+    def __init__(self, name, position):
         
-        self.position
+        self.name = name
+        self.money = 1500
+        self.position = position
         
+class Tile:
     
-    def action(self):
-        #TODO: For student to implement based on game
+    def __init__(self,name,price):
+        self.name = name
+        self.price = price
+        self.cost = 300
+        self.rent = 50
+        self.owner = None
+        
+class Piece:
+    
+    def __init__(self):
+        pass
+
+app = Board(players, boardSize)
+app.mainLoop()
+    
+    
+    
+def setup():
+    global f
+    size(canvasSize,5*canvasSize/4)
+    background(0)
+    f = createFont("Arial",16)
+    
+def draw():
+    global f
+    textFont(f,16)
+    squares = (boardSize-4)/4 + 2
+    startX = canvasSize-canvasSize/squares
+    startY = canvasSize-canvasSize/squares
+    for i in range(boardSize/4+1):
+        rect(startX, startY, canvasSize/squares, canvasSize/squares)
+        fill(0)
+        textAlign(CENTER)
+        text(app.board[i].name, startX+canvasSize/(2*squares), startY+canvasSize/(2*squares))
+        fill(255)
+        startX -= canvasSize/squares
+    for i in range(boardSize/4):
+        rect(startX, startY, canvasSize/squares, canvasSize/squares)
+        fill(0)
+        textAlign(CENTER)
+        text(app.board[i+boardSize/4].name, startX+canvasSize/(2*squares), startY+canvasSize/(2*squares))
+        fill(255)
+        startY += canvasSize/squares
+    rect(canvasSize/squares, canvasSize/squares, canvasSize-2*canvasSize/squares, canvasSize-2*canvasSize/squares)
+    #for player in app.playerOrder:
+        #stroke
