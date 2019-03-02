@@ -1,3 +1,20 @@
+"""
+Almost working tic tac toe implementation:
+
+    - might move position function to board just for 
+    ease of use 
+
+Basic Template Explained Below above each function
+
+The main classes used were:
+    class Board
+    class Player
+"""
+
+
+"""
+The board class basically subsumed everything
+"""
 class Board:
     
     def __init__(self, numPlayers):
@@ -102,6 +119,8 @@ class Player:
         self.shape = shape
     
     def getPosition(self):
+        
+
         # choose square, check square
         # validate it is within bounds
         # return chosen position
@@ -123,16 +142,23 @@ class Player:
     def getShape(self):
         # returns colour
         return self.shape
-        
-            
+
+"""
+The Piece class wasn't used, mostly due to 
+pieces not being really having enough imporant 
+attributes to track.  Their positions don't change,
+and all pieces are identical per player
+"""
 class Piece:
 
     def __init__(self, type):
         self.type = type
 
-
+"""
+The main function was kept as small as 
+possible, as usual
+"""
 def main():
-
     board = Board(2)
    
 main()
